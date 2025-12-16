@@ -65,6 +65,10 @@ eng::InputManager & eng::Engine::GetInputManager() {
     return inputManager;
 }
 
+eng::GraphicsAPI & eng::Engine::GetGraphicsAPI() {
+    return graphics;
+}
+
 bool initWindow(GLFWwindow *&window, eng::Engine* engine) {
     std::cout << "Initializing window" << std::endl;
     if (!glfwInit()) {

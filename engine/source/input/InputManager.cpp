@@ -11,7 +11,6 @@ void eng::InputManager::SetKeyPressed(int key, bool isPressed) {
         return;
     }
 
-    std::cout << key << " " << isPressed << std::endl;
     pressed[key] = isPressed;
 }
 

@@ -1,0 +1,33 @@
+//
+// Created by Marcin Lusa on 16/12/2025.
+//
+
+#include "ShaderProgram.h"
+
+#include "GL/glew.h"
+
+
+eng::ShaderProgram::~ShaderProgram() {
+    glDeleteProgram(shaderProgram);
+}
+
+void eng::ShaderProgram::Bind() {
+    glUseProgram(shaderProgram);
+}
+
+GLint eng::ShaderProgram::GetUniformLocation(const std::string &name) {
+    auto it = uniformLocationsCache.find(name);
+    if (it != uniformLocationsCache.end()) {
+        return it->second;
+    }
+
+    GLint location = glGetUniformLocation(shaderProgram, name.c_str());
+    uniformLocationsCache[name] = location;
+    return location;
+
+}
+
+void eng::ShaderProgram::SetUniform(const std::string &name, float value) {
+    auto location = GetUniformLocation(name);
+    glUniform1f(location, value);
+}
