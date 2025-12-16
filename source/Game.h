@@ -4,7 +4,7 @@
 
 class Game : public eng::Application {
 public:
-    bool Initialize() override;
+    bool Initialize(eng::Engine* owner) override;
 
     void Shutdown() override;
 

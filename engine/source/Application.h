@@ -1,11 +1,12 @@
 #pragma once
 
 namespace eng {
+    class Engine;
     class Application {
         public:
         virtual ~Application() = default;
 
-        virtual bool Initialize() = 0;
+        virtual bool Initialize(Engine* owner);
         virtual void Shutdown() = 0;
         virtual void Update(float deltaTime) = 0;
 
@@ -13,6 +14,9 @@ namespace eng {
         bool NeedsToBeClosed() const;
 
     private:
-        bool needsToBeClosed = true;
+        bool needsToBeClosed = false;
+
+    protected:
+        Engine* owner = nullptr;
     };
 }

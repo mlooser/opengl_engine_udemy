@@ -2,6 +2,9 @@
 #include <memory>
 
 #include <chrono>
+#include "input/InputManager.h"
+
+struct GLFWwindow;
 
 namespace eng {
     class Application;
@@ -16,8 +19,12 @@ namespace eng {
 
         void SetApplication(Application* app);
 
+        InputManager& GetInputManager();
+
     private:
+        GLFWwindow* window;
         std::unique_ptr<Application> application;
         std::chrono::steady_clock::time_point lastTimePoint;
+        InputManager inputManager;
     };
 }
