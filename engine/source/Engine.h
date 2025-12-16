@@ -1,0 +1,13 @@
+//
+// Created by Marcin Lusa on 16/12/2025.
+//
+
+#ifndef GAMEDEVELOPMENTPROJECT_ENGINE_H
+#define GAMEDEVELOPMENTPROJECT_ENGINE_H
+
+
+class Engine {
+};
+
+
+#endif //GAMEDEVELOPMENTPROJECT_ENGINE_H

@@ -1,0 +1,13 @@
+//
+// Created by Marcin Lusa on 16/12/2025.
+//
+
+#ifndef GAMEDEVELOPMENTPROJECT_APPLICATION_H
+#define GAMEDEVELOPMENTPROJECT_APPLICATION_H
+
+
+class Application {
+};
+
+
+#endif //GAMEDEVELOPMENTPROJECT_APPLICATION_H
