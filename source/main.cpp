@@ -7,13 +7,18 @@
 #include <GLFW/glfw3.h>
 
 bool initWindow(GLFWwindow *&window);
+
 void createFragmentShader(GLuint &fragmentShader);
+
 void createVertexShader(GLuint &vertexShader);
+
 void createShaderProgram(GLuint vertexShader, GLuint fragmentShader, GLuint &program);
 
+void keyCallback(GLFWwindow *window, int key, int scanCode, int action, int mode);
 
-int main()
-{
+
+
+int main() {
     GLFWwindow *window;
     if (!initWindow(window))
         return 1;
@@ -52,7 +57,8 @@ int main()
     GLuint ebo;
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertexIndices.size() * sizeof(unsigned int), vertexIndices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertexIndices.size() * sizeof(unsigned int), vertexIndices.data(),
+                 GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     GLuint vertexArrayObject;
@@ -61,10 +67,10 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) (3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -105,7 +111,7 @@ bool initWindow(GLFWwindow *&window) {
 
     glfwMakeContextCurrent(window);
 
-    if (glewInit()!= GLEW_OK) {
+    if (glewInit() != GLEW_OK) {
         std::cout << "Failed to initialize GLFW" << std::endl;
         return false;
     }
@@ -115,6 +121,9 @@ bool initWindow(GLFWwindow *&window) {
         glfwTerminate();
         return false;
     }
+
+    glfwSetKeyCallback(window, keyCallback);
+
     return true;
 }
 
@@ -132,7 +141,7 @@ void createFragmentShader(GLuint &fragmentShader) {
     )";
 
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    const char* fragmentShaderSourcePointer = fragmentShaderSource.c_str();
+    const char *fragmentShaderSourcePointer = fragmentShaderSource.c_str();
     glShaderSource(fragmentShader, 1, &fragmentShaderSourcePointer, nullptr);
     glCompileShader(fragmentShader);
 
@@ -162,7 +171,7 @@ void createVertexShader(GLuint &vertexShader) {
     )";
 
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    const char* vertexShaderSourcePointer = vertexShaderSource.c_str();
+    const char *vertexShaderSourcePointer = vertexShaderSource.c_str();
     glShaderSource(vertexShader, 1, &vertexShaderSourcePointer, nullptr);
     glCompileShader(vertexShader);
 
@@ -187,5 +196,25 @@ void createShaderProgram(GLuint vertexShader, GLuint fragmentShader, GLuint &pro
         std::cout << "Shader compilation error!" << std::endl;
         char info[1024];
         glGetShaderInfoLog(program, 1024, nullptr, info);
+        std::cout << info << std::endl;
+    }
+}
+
+void keyCallback(GLFWwindow *window, int key, int scanCode, int action, int mode) {
+    if (action == GLFW_PRESS) {
+        switch (key) {
+            case GLFW_KEY_UP:
+                std::cout << "Up key pressed" << std::endl;
+                break;
+            case GLFW_KEY_DOWN:
+                std::cout << "Down key pressed" << std::endl;
+                break;
+            case GLFW_KEY_RIGHT:
+                std::cout << "Right key pressed" << std::endl;
+                break;
+            case GLFW_KEY_LEFT:
+                std::cout << "Left key pressed" << std::endl;
+                break;
+        }
     }
 }
