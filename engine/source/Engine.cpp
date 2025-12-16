@@ -28,6 +28,7 @@ void eng::Engine::Run() {
     while (!application->NeedsToBeClosed()) {
         auto now = std::chrono::high_resolution_clock::now();
         float deltaTime = std::chrono::duration<float>(now - lastTimePoint).count();
+        lastTimePoint = now;
         application->Update(deltaTime);
     }
 }

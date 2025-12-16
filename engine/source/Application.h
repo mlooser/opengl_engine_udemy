@@ -3,14 +3,16 @@
 namespace eng {
     class Application {
         public:
-        virtual bool Initialize();
-        virtual void Shutdown();
-        virtual void Update(float deltaTime);
+        virtual ~Application() = default;
+
+        virtual bool Initialize() = 0;
+        virtual void Shutdown() = 0;
+        virtual void Update(float deltaTime) = 0;
 
         void SetNeedsToBeClosed(bool needsToBeClosed);
         bool NeedsToBeClosed() const;
 
     private:
-        bool needsToBeClosed;
+        bool needsToBeClosed = true;
     };
 }
