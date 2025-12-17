@@ -19,6 +19,7 @@ namespace eng {
         void Bind();
         GLint GetUniformLocation(const std::string& name);
         void SetUniform(const std::string& name, float value);
+        void SetUniform(const std::string& name, float v0, float v1);
 
         GLuint GetShaderProgram(){return shaderProgram;}
 
