@@ -42,24 +42,57 @@ bool Game::Initialize(eng::Engine *owner) {
         vertexShaderSource,
         fragmentShaderSource);
 
+    material.SetShaderProgram(shaderProgram);
+
     std::cout << "Shader Program id =" << shaderProgram->GetShaderProgram() << std::endl;
 
+    std::vector<float> vertexes = {
+        0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f
+    };
+
+    std::vector<unsigned int> vertexIndices = {
+        0, 1, 2,
+        0, 2, 3
+    };
+
+    eng::VertexLayout vertexLayout;
+
+    //Position
+    vertexLayout.elements.push_back({0, 3, GL_FLOAT, 0});
+
+    //Color
+    vertexLayout.elements.push_back({1, 3, GL_FLOAT, sizeof(float) * 3});
+
+    vertexLayout.stride = sizeof(float) * 6;
+
+    mesh = std::make_unique<eng::Mesh>(vertexLayout, vertexes, vertexIndices);
+
+    return true;
 }
 
 void Game::Shutdown() {
-
 }
 
 void Game::Update(float deltaTime) {
-
-    auto& inputManager = owner->GetInputManager();
+    auto &inputManager = owner->GetInputManager();
 
     if (inputManager.IsKeyPressed(GLFW_KEY_A)) {
-        std::cout <<"[A]" << std::endl;
+        std::cout << "[A]" << std::endl;
     }
 
     if (inputManager.IsKeyPressed(GLFW_KEY_ESCAPE)) {
-        std::cout <<"Should be closed" << std::endl;
+        std::cout << "Should be closed" << std::endl;
         SetNeedsToBeClosed(true);
     }
+
+
+    eng::RenderCommand renderCommand{
+        mesh.get(),
+        &material
+    };
+
+    owner->GetRenderQueue().Submit(renderCommand);
 }

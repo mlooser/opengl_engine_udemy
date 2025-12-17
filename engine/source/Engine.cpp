@@ -53,6 +53,11 @@ void eng::Engine::Run() {
         lastTimePoint = now;
         application->Update(deltaTime);
 
+        graphics.SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        graphics.ClearBuffers();
+
+        renderQueue.Draw(graphics);
+
         glfwSwapBuffers(window);
     }
 }
@@ -67,6 +72,10 @@ eng::InputManager & eng::Engine::GetInputManager() {
 
 eng::GraphicsAPI & eng::Engine::GetGraphicsAPI() {
     return graphics;
+}
+
+eng::RenderQueue & eng::Engine::GetRenderQueue() {
+    return renderQueue;
 }
 
 bool initWindow(GLFWwindow *&window, eng::Engine* engine) {

@@ -14,6 +14,13 @@ set(PROJECT_SOURCE_FILES
         source/graphics/ShaderProgram.h
         source/graphics/GraphicsAPI.cpp
         source/graphics/GraphicsAPI.h
+        source/render/Material.cpp
+        source/render/Material.h
+        source/render/Mesh.cpp
+        source/render/Mesh.h
+        source/graphics/VertexLayout.h
+        source/render/RenderQueue.cpp
+        source/render/RenderQueue.h
 )
 
 include_directories(source)

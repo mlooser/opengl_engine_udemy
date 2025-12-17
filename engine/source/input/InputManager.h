@@ -9,6 +9,6 @@ namespace eng {
         bool IsKeyPressed(int key);
 
     private:
-        std::array<bool, 256> pressed = {false}; //TODO change to bitset
+        std::array<bool, 257> pressed = {false}; //TODO change to bitset
     };
 }

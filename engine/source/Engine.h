@@ -4,6 +4,7 @@
 #include <chrono>
 #include "input/InputManager.h"
 #include "graphics/GraphicsAPI.h"
+#include "render/RenderQueue.h"
 
 struct GLFWwindow;
 
@@ -22,12 +23,15 @@ namespace eng {
 
         InputManager& GetInputManager();
         GraphicsAPI& GetGraphicsAPI();
+        RenderQueue& GetRenderQueue();
 
     private:
         GLFWwindow* window;
         std::unique_ptr<Application> application;
         std::chrono::steady_clock::time_point lastTimePoint;
+
         InputManager inputManager;
         GraphicsAPI graphics;
+        RenderQueue renderQueue;
     };
 }

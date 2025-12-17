@@ -6,14 +6,16 @@
 
 #include <GL/glew.h>
 #include <iostream>
+#include <vector>
 
 #include "ShaderProgram.h"
+#include "render/Material.h"
+#include "render/Mesh.h"
 
 
 std::shared_ptr<eng::ShaderProgram> eng::GraphicsAPI::CreateShaderProgram(
     const std::string &vertexSource,
     const std::string &fragmentSource) {
-
     GLint success;
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -66,5 +68,51 @@ std::shared_ptr<eng::ShaderProgram> eng::GraphicsAPI::CreateShaderProgram(
 }
 
 void eng::GraphicsAPI::BindShaderProgram(ShaderProgram *program) {
-    program->Bind();
+    if (program) {
+        program->Bind();
+    }
+}
+
+void eng::GraphicsAPI::BindMaterial(Material *material) {
+    if (material) {
+        material->Bind();
+    }
+}
+
+void eng::GraphicsAPI::BindMesh(Mesh *mesh) {
+    if (mesh) {
+        mesh->Bind();
+    }
+}
+
+void eng::GraphicsAPI::DrawMesh(Mesh *mesh) {
+    if (mesh) {
+        mesh->Draw();
+    }
+}
+
+void eng::GraphicsAPI::SetClearColor(float r, float g, float b, float a) {
+    glClearColor(r, g, b, a);
+}
+
+void eng::GraphicsAPI::ClearBuffers() {
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+GLuint eng::GraphicsAPI::CreateVertexBuffer(const std::vector<float> &vertices) {
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    return vbo;
+}
+
+GLuint eng::GraphicsAPI::CreateIndexBuffer(const std::vector<uint32_t> &indices) {
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    return ebo;
 }
