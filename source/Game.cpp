@@ -18,10 +18,9 @@ bool Game::Initialize(eng::Engine *owner) {
          out vec4 FragColor;
 
          in vec3 vColor;
-         uniform vec4 uColor;
 
          void main(){
-             FragColor = vec4(vColor, 1.f) * uColor;
+             FragColor = vec4(vColor, 1.f);
          }
      )";
 
