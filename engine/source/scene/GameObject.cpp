@@ -11,7 +11,7 @@ void eng::GameObject::Update(float deltaTime) {
             (*it)->Update(deltaTime);
         }
     }
-    
+
     children.erase(
         std::remove_if(
             children.begin(),
@@ -30,10 +30,6 @@ const std::string & eng::GameObject::GetName() const {
     return this->name;
 }
 
-void eng::GameObject::SetParent(GameObject *parent) {
-    this->parent = parent;
-}
-
 eng::GameObject * eng::GameObject::GetParent() const {
     return parent;
 }
@@ -49,17 +45,8 @@ void eng::GameObject::ChangeParent(GameObject *gameObject, GameObject *newParent
         return;
     }
 
-    // Find and extract the unique_ptr from current parent
-    auto& siblings = currentParent->children;
-    auto it = std::find_if(siblings.begin(), siblings.end(),
-        [gameObject](const std::unique_ptr<GameObject>& child) {
-            return child.get() == gameObject;
-        });
-
-    if (it != siblings.end()) {
-        // Transfer ownership to new parent
-        std::unique_ptr<GameObject> child = std::move(*it);
-        siblings.erase(it);
+    auto child = currentParent->RemoveChild(gameObject);
+    if (child) {
         newParent->AddChild(std::move(child));
     }
 }
