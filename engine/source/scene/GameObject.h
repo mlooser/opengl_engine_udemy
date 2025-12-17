@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace eng {
     class GameObject {
@@ -15,13 +16,13 @@ namespace eng {
 
         void SetParent(GameObject *parent);
         GameObject *GetParent() const;
-        void AddChild(GameObject * gameObject);
+        void AddChild(std::unique_ptr<GameObject> gameObject);
         void ChangeParent(GameObject* gameObject, GameObject* newParent);
 
         bool IsAlive() const;
         void ScheduleForDestroy();
 
-        void RemoveChild(GameObject *child);
+        std::unique_ptr<GameObject> RemoveChild(GameObject *child);
 
         GameObject* CreateChildGameObject(const std::string& name);
 
@@ -33,19 +34,19 @@ namespace eng {
 
     private:
         std::string name;
-        GameObject* parent;
-        std::vector<GameObject*> children;
+        GameObject* parent = nullptr;
+        std::vector<std::unique_ptr<GameObject>> children;
         bool isAlive = true;
     };
 
     template<typename T, typename>
     T* GameObject::CreateChildGameObject(const std::string& name) {
+        auto gameObject = std::unique_ptr<T>(new T());
+        T* rawPtr = gameObject.get();
+        rawPtr->SetName(name);
+        rawPtr->SetParent(this);
+        children.push_back(std::move(gameObject));
 
-        T* gameObject = new T();
-        gameObject->SetName(name);
-        gameObject->SetParent(this);
-        children.push_back(gameObject);
-
-        return gameObject;
+        return rawPtr;
     }
 }

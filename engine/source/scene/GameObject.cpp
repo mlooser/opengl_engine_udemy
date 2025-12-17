@@ -7,14 +7,19 @@
 
 void eng::GameObject::Update(float deltaTime) {
     for (auto it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->IsAlive()) {
+        if ( (*it)->IsAlive()) {
             (*it)->Update(deltaTime);
         }
-        else {
-            children.erase(it);
-        }
-
     }
+    
+    children.erase(
+        std::remove_if(
+            children.begin(),
+            children.end(),
+            [this](const std::unique_ptr<GameObject>& child) {
+                return !child->IsAlive();
+            }),
+        children.end());
 }
 
 void eng::GameObject::SetName(const std::string &name) {
@@ -27,21 +32,36 @@ const std::string & eng::GameObject::GetName() const {
 
 void eng::GameObject::SetParent(GameObject *parent) {
     this->parent = parent;
-    parent->AddChild(this);
 }
 
 eng::GameObject * eng::GameObject::GetParent() const {
     return parent;
 }
 
-void eng::GameObject::AddChild(GameObject *gameObject) {
-    children.push_back(gameObject);
+void eng::GameObject::AddChild(std::unique_ptr<GameObject> gameObject) {
+    gameObject->parent = this;
+    children.push_back(std::move(gameObject));
 }
 
 void eng::GameObject::ChangeParent(GameObject *gameObject, GameObject *newParent) {
     auto currentParent = gameObject->GetParent();
-    currentParent->RemoveChild(gameObject);
-    newParent->SetParent(gameObject);
+    if (!currentParent) {
+        return;
+    }
+
+    // Find and extract the unique_ptr from current parent
+    auto& siblings = currentParent->children;
+    auto it = std::find_if(siblings.begin(), siblings.end(),
+        [gameObject](const std::unique_ptr<GameObject>& child) {
+            return child.get() == gameObject;
+        });
+
+    if (it != siblings.end()) {
+        // Transfer ownership to new parent
+        std::unique_ptr<GameObject> child = std::move(*it);
+        siblings.erase(it);
+        newParent->AddChild(std::move(child));
+    }
 }
 
 bool eng::GameObject::IsAlive() const {
@@ -52,16 +72,20 @@ void eng::GameObject::ScheduleForDestroy() {
     isAlive = false;
 }
 
-void eng::GameObject::RemoveChild(GameObject *child) {
-    children.erase(
-        std::remove_if(children.begin(), children.end(),
-            [child](const GameObject* ptr) {
-                return ptr == child;
-            }),
-        children.end()
-    );
+std::unique_ptr<eng::GameObject> eng::GameObject::RemoveChild(GameObject *child) {
+    auto it = std::find_if(children.begin(), children.end(),
+        [child](const std::unique_ptr<GameObject>& ptr) {
+            return ptr.get() == child;
+        });
 
-    child->parent = nullptr;
+    if (it != children.end()) {
+        std::unique_ptr<GameObject> removed = std::move(*it);
+        removed->parent = nullptr;
+        children.erase(it);
+        return removed;
+    }
+
+    return nullptr;
 }
 
 eng::GameObject * eng::GameObject::CreateChildGameObject(const std::string &name) {
