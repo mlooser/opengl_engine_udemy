@@ -1,4 +1,5 @@
 #pragma once
+#include "scene/Scene.h"
 
 namespace eng {
     class Engine;
@@ -13,10 +14,13 @@ namespace eng {
         void SetNeedsToBeClosed(bool needsToBeClosed);
         bool NeedsToBeClosed() const;
 
+        Scene& GetScene();
+
     private:
         bool needsToBeClosed = false;
 
     protected:
         Engine* owner = nullptr;
+        Scene scene = {};
     };
 }

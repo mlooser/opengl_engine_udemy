@@ -11,6 +11,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "scene/components/CameraComponent.h"
+
 
 bool initWindow(GLFWwindow *&window, eng::Engine* engine);
 void keyCallback(GLFWwindow *window, int key, int scanCode, int action, int mode);
@@ -37,6 +39,39 @@ void eng::Engine::Shutdown() {
     window = nullptr;
 }
 
+float eng::Engine::CalculateAspectRatio() const {
+    int windowWidth = 0;
+    int windowHeight = 0;
+    glfwGetWindowSize(window, &windowWidth, &windowHeight);
+    float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+    return aspectRatio;
+}
+
+eng::CameraData eng::Engine::CalculateCameraData() {
+    CameraData cameraData;
+    if (GameObject* cameraOwner = application->GetScene().GetMainCamera()) {
+        if (CameraComponent* camera = cameraOwner->GetComponent<CameraComponent>()) {
+
+            float aspectRatio = CalculateAspectRatio();
+
+            cameraData.projectionMatrix = camera->GetProjectionMatrix(aspectRatio);
+            cameraData.viewMatrix = camera->GetViewMatrix();
+        }
+    }
+    return cameraData;
+}
+
+void eng::Engine::Render() {
+    graphics.SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    graphics.ClearBuffers();
+
+    CameraData cameraData = CalculateCameraData();
+
+    renderQueue.Draw(graphics, cameraData);
+
+    glfwSwapBuffers(window);
+}
+
 void eng::Engine::Run() {
     if (!application) return;
 
@@ -53,12 +88,7 @@ void eng::Engine::Run() {
         lastTimePoint = now;
         application->Update(deltaTime);
 
-        graphics.SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        graphics.ClearBuffers();
-
-        renderQueue.Draw(graphics);
-
-        glfwSwapBuffers(window);
+        Render();
     }
 }
 

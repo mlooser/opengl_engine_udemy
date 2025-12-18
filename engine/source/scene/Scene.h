@@ -6,6 +6,13 @@ namespace eng {
     class Scene : public GameObject {
     public:
         Scene() = default;
-        virtual ~Scene() = default;
+
+        ~Scene() override = default;
+
+        void SetMainCamera(GameObject* camera);
+        GameObject* GetMainCamera() const;
+
+    private:
+        GameObject* mainCamera;
     };
 }

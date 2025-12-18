@@ -14,6 +14,12 @@ bool Game::Initialize(eng::Engine *owner) {
     Application::Initialize(owner);
 
     scene.CreateChildGameObject<TestObject>(owner, "test object");
+    auto* cameraHolder = scene.CreateChildGameObject(owner, "Camera");
+
+    cameraHolder->SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
+    cameraHolder->AddComponent<eng::CameraComponent>();
+
+    scene.SetMainCamera(cameraHolder);
 
     return true;
 }

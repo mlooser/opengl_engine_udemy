@@ -6,3 +6,10 @@
 #include "GameObject.h"
 
 
+void eng::Scene::SetMainCamera(GameObject *camera) {
+    mainCamera = camera;
+}
+
+eng::GameObject * eng::Scene::GetMainCamera() const {
+    return mainCamera;
+}

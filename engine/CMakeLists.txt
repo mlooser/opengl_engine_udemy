@@ -2,6 +2,13 @@ cmake_minimum_required(VERSION 3.10)
 
 project(Engine)
 
+# Enable all warnings
+if(MSVC)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
 set(PROJECT_SOURCE_FILES
         source/Engine.h
         source/Engine.cpp
@@ -29,6 +36,8 @@ set(PROJECT_SOURCE_FILES
         source/scene/Component.h
         source/scene/components/MeshComponent.cpp
         source/scene/components/MeshComponent.h
+        source/scene/components/CameraComponent.cpp
+        source/scene/components/CameraComponent.h
 )
 
 include_directories(source)

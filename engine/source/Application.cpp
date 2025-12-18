@@ -16,3 +16,9 @@ void eng::Application::SetNeedsToBeClosed(bool needsToBeClosed) {
 bool eng::Application::NeedsToBeClosed() const {
     return needsToBeClosed;
 }
+
+eng::Scene & eng::Application::GetScene() {
+    return scene;
+}
+
+

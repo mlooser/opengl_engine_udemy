@@ -22,7 +22,7 @@ void eng::GameObject::Update(float deltaTime) {
         std::remove_if(
             children.begin(),
             children.end(),
-            [this](const std::unique_ptr<GameObject> &child) {
+            [](const std::unique_ptr<GameObject> &child) {
                 return !child->IsAlive();
             }),
         children.end());
@@ -109,4 +109,8 @@ glm::mat4 eng::GameObject::GetWorldTransform() const {
 
 eng::Engine * eng::GameObject::GetEngine() const {
     return engine;
+}
+
+void eng::GameObject::SetPosition(const glm::vec3 &vec) {
+    position = vec;
 }

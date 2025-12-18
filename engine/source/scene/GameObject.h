@@ -40,12 +40,17 @@ namespace eng {
         template<typename T, typename... TArgs, typename = std::enable_if<std::is_base_of_v<Component, T> > >
         T *AddComponent(TArgs &... args);
 
+        template<typename T, typename = std::enable_if<std::is_base_of_v<Component, T> > >
+        T* GetComponent();
+
 
         glm::mat4 GetLocalTransform() const;
 
         glm::mat4 GetWorldTransform() const;
 
         Engine *GetEngine() const;
+
+        void SetPosition(const glm::vec3& vec);
 
     protected:
         GameObject() = default;
@@ -81,9 +86,23 @@ namespace eng {
 
     template<typename T, typename... TArgs, typename>
     T *GameObject::AddComponent(TArgs &... args) {
-        auto cmp = std::unique_ptr<T>(new T(args...));
+        T* rawCmp = new T(args...);
+        auto cmp = std::unique_ptr<T>(rawCmp);
         cmp->SetOwner(this);
         components.push_back(std::move(cmp));
-        return cmp.get();
+        return rawCmp;
+    }
+
+    template<typename T, typename>
+    T * GameObject::GetComponent() {
+        const int typeId = Component::StaticTypeId<T>();
+
+        for (auto& cmp : components) {
+            if (cmp->GetTypeId() == typeId) {
+                return static_cast<T*>(cmp.get());
+            }
+        }
+
+        return nullptr;
     }
 }

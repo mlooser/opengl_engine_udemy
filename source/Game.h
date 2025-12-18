@@ -10,7 +10,4 @@ public:
     void Shutdown() override;
 
     void Update(float deltaTime) override;
-
-private:
-    eng::Scene scene;
 };

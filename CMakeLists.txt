@@ -4,6 +4,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 project(GameDevelopmentProject)
 
+# Enable all warnings
+if(MSVC)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
 set(PROJECT_SOURCE_FILES
         source/main.cpp
         source/Game.cpp

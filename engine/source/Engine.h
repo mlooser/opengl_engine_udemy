@@ -17,6 +17,12 @@ namespace eng {
 
         void Shutdown();
 
+        float CalculateAspectRatio() const;
+
+        eng::CameraData CalculateCameraData();
+
+        void Render();
+
         void Run();
 
         void SetApplication(Application* app);

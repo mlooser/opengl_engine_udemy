@@ -13,11 +13,14 @@ void eng::RenderQueue::Submit(const RenderCommand &command) {
     renderCommands.push_back(command);
 }
 
-void eng::RenderQueue::Draw(GraphicsAPI &graphicsAPI) {
+void eng::RenderQueue::Draw(GraphicsAPI &graphicsAPI, const CameraData& cameraData) {
     for (auto& command: renderCommands) {
         graphicsAPI.BindMaterial(command.material);
+        auto shaderProgram = command.material->GetShaderProgram();
 
-        command.material->GetShaderProgram()->SetUniform("uModel", command.modelMatrix);
+        shaderProgram->SetUniform("uModel", command.modelMatrix);
+        shaderProgram->SetUniform("uView", cameraData.viewMatrix);
+        shaderProgram->SetUniform("uProjection", cameraData.projectionMatrix);
 
         graphicsAPI.BindMesh(command.mesh);
         graphicsAPI.DrawMesh(command.mesh);

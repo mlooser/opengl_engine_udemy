@@ -4,6 +4,8 @@
 
 #include "Component.h"
 
+int eng::Component::nextTypeId = 0;
+
 void eng::Component::Update(float deltaTime) {
 }
 
