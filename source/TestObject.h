@@ -8,7 +8,4 @@ public:
 
     void Update(float deltaTime) override;
 
-private:
-    eng::Material material;
-    std::shared_ptr<eng::Mesh> mesh;
 };

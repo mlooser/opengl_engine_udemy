@@ -5,11 +5,16 @@
 #include "GameObject.h"
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Component.h"
 
 void eng::GameObject::Update(float deltaTime) {
-    for (auto it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->IsAlive()) {
-            (*it)->Update(deltaTime);
+    for (const auto &it: components) {
+        it->Update(deltaTime);
+    }
+
+    for (const auto &it: children) {
+        if (it->IsAlive()) {
+            it->Update(deltaTime);
         }
     }
 
@@ -76,7 +81,7 @@ std::unique_ptr<eng::GameObject> eng::GameObject::RemoveChild(GameObject *child)
     return nullptr;
 }
 
-eng::GameObject *eng::GameObject::CreateChildGameObject(Engine* engine, const std::string &name) {
+eng::GameObject *eng::GameObject::CreateChildGameObject(Engine *engine, const std::string &name) {
     return CreateChildGameObject<GameObject>(engine, name);
 }
 
@@ -100,4 +105,8 @@ glm::mat4 eng::GameObject::GetWorldTransform() const {
     }
 
     return GetLocalTransform();
+}
+
+eng::Engine * eng::GameObject::GetEngine() const {
+    return engine;
 }

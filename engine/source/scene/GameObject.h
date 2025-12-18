@@ -4,9 +4,11 @@
 #include <memory>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
+#include "Component.h"
 
 namespace eng {
     class Engine;
+    class Component;
 
     class GameObject {
     public:
@@ -30,17 +32,25 @@ namespace eng {
 
         std::unique_ptr<GameObject> RemoveChild(GameObject *child);
 
-        GameObject *CreateChildGameObject(Engine* engine, const std::string &name);
+        GameObject *CreateChildGameObject(Engine *engine, const std::string &name);
 
         template<typename T, typename = std::enable_if<std::is_base_of_v<GameObject, T> > >
-        T *CreateChildGameObject(Engine* engine, const std::string &name);
+        T *CreateChildGameObject(Engine *engine, const std::string &name);
+
+        template<typename T, typename... TArgs, typename = std::enable_if<std::is_base_of_v<Component, T> > >
+        T *AddComponent(TArgs &... args);
+
 
         glm::mat4 GetLocalTransform() const;
+
         glm::mat4 GetWorldTransform() const;
+
+        Engine *GetEngine() const;
 
     protected:
         GameObject() = default;
-        Engine* engine;
+
+        Engine *engine;
 
         glm::vec3 position = glm::vec3(0.0f);
         glm::vec3 rotation = glm::vec3(0.0f);
@@ -49,12 +59,15 @@ namespace eng {
     private:
         std::string name;
         GameObject *parent = nullptr;
+
         std::vector<std::unique_ptr<GameObject> > children;
+        std::vector<std::unique_ptr<Component> > components;
+
         bool isAlive = true;
     };
 
     template<typename T, typename>
-    T *GameObject::CreateChildGameObject(Engine* engine, const std::string &name) {
+    T *GameObject::CreateChildGameObject(Engine *engine, const std::string &name) {
         auto gameObject = std::unique_ptr<T>(new T());
         T *rawPtr = gameObject.get();
         rawPtr->SetName(name);
@@ -64,5 +77,13 @@ namespace eng {
         children.push_back(std::move(gameObject));
 
         return rawPtr;
+    }
+
+    template<typename T, typename... TArgs, typename>
+    T *GameObject::AddComponent(TArgs &... args) {
+        auto cmp = std::unique_ptr<T>(new T(args...));
+        cmp->SetOwner(this);
+        components.push_back(std::move(cmp));
+        return cmp.get();
     }
 }

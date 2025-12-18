@@ -7,6 +7,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "scene/components/MeshComponent.h"
+
 TestObject::TestObject() {
     std::string fragmentShaderSource = R"(
          #version 330 core
@@ -38,7 +40,8 @@ TestObject::TestObject() {
         vertexShaderSource,
         fragmentShaderSource);
 
-    material.SetShaderProgram(shaderProgram);
+    auto material = std::make_shared<eng::Material>();
+    material->SetShaderProgram(shaderProgram);
 
     std::cout << "Shader Program id =" << shaderProgram->GetShaderProgram() << std::endl;
 
@@ -64,7 +67,9 @@ TestObject::TestObject() {
 
     vertexLayout.stride = sizeof(float) * 6;
 
-    mesh = std::make_shared<eng::Mesh>(vertexLayout, vertexes, vertexIndices);
+    auto mesh = std::make_shared<eng::Mesh>(vertexLayout, vertexes, vertexIndices);
+
+    AddComponent<eng::MeshComponent>(mesh, material);
 }
 
 void TestObject::Update(float deltaTime) {
@@ -88,12 +93,4 @@ void TestObject::Update(float deltaTime) {
     }
 
     rotation += glm::vec3(0.0f, 0.0f, 1.0f) * deltaTime * speed;
-
-    eng::RenderCommand renderCommand{
-        mesh.get(),
-        &material,
-        GetWorldTransform()
-    };
-
-    engine->GetRenderQueue().Submit(renderCommand);
 }
