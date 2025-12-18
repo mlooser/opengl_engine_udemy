@@ -12,6 +12,5 @@ public:
     void Update(float deltaTime) override;
 
 private:
-    eng::Material material;
-    std::unique_ptr<eng::Mesh> mesh;
+    eng::Scene scene;
 };

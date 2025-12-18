@@ -11,21 +11,24 @@ namespace eng {
 
     class GraphicsAPI {
     public:
-        static GLuint CreateVertexBuffer(const std::vector<float> & vertices);
-        static GLuint CreateIndexBuffer(const std::vector<uint32_t> & indices);
+        static GLuint CreateVertexBuffer(const std::vector<float> &vertices);
+
+        static GLuint CreateIndexBuffer(const std::vector<uint32_t> &indices);
+
+        static std::shared_ptr<ShaderProgram> CreateShaderProgram(const std::string &vertexSource,
+                                                                  const std::string &fragmentSource);
 
     public:
-        std::shared_ptr<ShaderProgram> CreateShaderProgram(const std::string& vertexSource, const std::string& fragmentSource);
+        void BindShaderProgram(ShaderProgram *program);
 
-        void BindShaderProgram(ShaderProgram* program);
-        void BindMaterial(Material* material);
-        void BindMesh(Mesh* mesh);
-        void DrawMesh(Mesh* mesh);
+        void BindMaterial(Material *material);
+
+        void BindMesh(Mesh *mesh);
+
+        void DrawMesh(Mesh *mesh);
 
         void SetClearColor(float r, float g, float b, float a);
-        void ClearBuffers();
 
+        void ClearBuffers();
     };
 }
-
-

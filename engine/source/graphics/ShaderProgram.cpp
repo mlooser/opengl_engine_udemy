@@ -4,7 +4,8 @@
 
 #include "ShaderProgram.h"
 
-#include "GL/glew.h"
+#include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 
 
 eng::ShaderProgram::~ShaderProgram() {
@@ -35,4 +36,9 @@ void eng::ShaderProgram::SetUniform(const std::string &name, float value) {
 void eng::ShaderProgram::SetUniform(const std::string &name, float v0, float v1) {
     auto location = GetUniformLocation(name);
     glUniform2f(location, v0, v1);
+}
+
+void eng::ShaderProgram::SetUniform(const std::string &name, const glm::mat4& matrix) {
+    auto location = GetUniformLocation(name);
+    glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }

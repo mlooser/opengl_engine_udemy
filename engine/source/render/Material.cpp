@@ -11,6 +11,10 @@ void eng::Material::SetShaderProgram(std::shared_ptr<ShaderProgram>& shaderProgr
     shader = shaderProgram;
 }
 
+eng::ShaderProgram * eng::Material::GetShaderProgram() {
+    return shader.get();
+}
+
 void eng::Material::SetParamValue(const std::string &name, float value) {
     params[name] = value;
 }

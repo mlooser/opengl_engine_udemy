@@ -7,6 +7,7 @@
 #include "render/Mesh.h"
 #include "render/Material.h"
 #include "graphics/GraphicsAPI.h"
+#include "graphics/ShaderProgram.h"
 
 void eng::RenderQueue::Submit(const RenderCommand &command) {
     renderCommands.push_back(command);
@@ -15,6 +16,9 @@ void eng::RenderQueue::Submit(const RenderCommand &command) {
 void eng::RenderQueue::Draw(GraphicsAPI &graphicsAPI) {
     for (auto& command: renderCommands) {
         graphicsAPI.BindMaterial(command.material);
+
+        command.material->GetShaderProgram()->SetUniform("uModel", command.modelMatrix);
+
         graphicsAPI.BindMesh(command.mesh);
         graphicsAPI.DrawMesh(command.mesh);
     }
