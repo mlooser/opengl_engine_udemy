@@ -34,6 +34,10 @@ add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 add_subdirectory(thirdparty/glfw-3.4 "${CMAKE_CURRENT_BINARY_DIR}/glfw_build")
 include_directories(thirdparty/glfw-3.4/include)
 
+# Add GLM
+add_subdirectory(thirdparty/glm-1.0.1/glm)
+include_directories(thirdparty/glm-1.0.1)
+
 # Add Glew library
 add_compile_definitions(GLEW_NO_GLU)
 set(BUILD_UTILS OFF CACHE BOOL "utilities" FORCE)
@@ -46,6 +50,7 @@ set_property(TARGET glew PROPERTY FOLDER GLEW)
 target_link_libraries(${PROJECT_NAME}
         glfw
         glew_s
+        glm
 )
 
 # Google Test setup
