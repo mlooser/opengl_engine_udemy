@@ -40,5 +40,5 @@ void eng::ShaderProgram::SetUniform(const std::string &name, float v0, float v1)
 
 void eng::ShaderProgram::SetUniform(const std::string &name, const glm::mat4& matrix) {
     auto location = GetUniformLocation(name);
-    glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }

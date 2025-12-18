@@ -19,8 +19,8 @@ TEST(SceneTest, SceneCanHaveChildren) {
     auto* scene = new eng::Scene();
     scene->SetName("TestScene");
 
-    auto* child1 = scene->CreateChildGameObject("Child1");
-    auto* child2 = scene->CreateChildGameObject("Child2");
+    auto* child1 = scene->CreateChildGameObject(nullptr, "Child1");
+    auto* child2 = scene->CreateChildGameObject(nullptr, "Child2");
 
     ASSERT_NE(child1, nullptr);
     ASSERT_NE(child2, nullptr);
@@ -49,9 +49,9 @@ TEST(SceneTest, SceneWithNestedHierarchy) {
     auto* scene = new eng::Scene();
     scene->SetName("TestScene");
 
-    auto* parent = scene->CreateChildGameObject("Parent");
-    auto* child = parent->CreateChildGameObject("Child");
-    auto* grandChild = child->CreateChildGameObject("GrandChild");
+    auto* parent = scene->CreateChildGameObject(nullptr, "Parent");
+    auto* child = parent->CreateChildGameObject(nullptr, "Child");
+    auto* grandChild = child->CreateChildGameObject(nullptr, "GrandChild");
 
     EXPECT_EQ(parent->GetParent(), scene);
     EXPECT_EQ(child->GetParent(), parent);
@@ -65,7 +65,7 @@ TEST(SceneTest, RemoveChildFromScene) {
     auto* scene = new eng::Scene();
     scene->SetName("TestScene");
 
-    auto* child = scene->CreateChildGameObject("Child");
+    auto* child = scene->CreateChildGameObject(nullptr, "Child");
 
     ASSERT_NE(child, nullptr);
     EXPECT_EQ(child->GetParent(), scene);

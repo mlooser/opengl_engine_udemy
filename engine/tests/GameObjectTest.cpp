@@ -7,7 +7,7 @@ TEST(GameObjectTest, CreateChildGameObject) {
     auto* scene = new eng::Scene();
     scene->SetName("TestScene");
 
-    auto* child = scene->CreateChildGameObject("Child1");
+    auto* child = scene->CreateChildGameObject(nullptr, "Child1");
 
     ASSERT_NE(child, nullptr);
     EXPECT_EQ(child->GetName(), "Child1");
@@ -21,8 +21,8 @@ TEST(GameObjectTest, CreateMultipleChildren) {
     auto* scene = new eng::Scene();
     scene->SetName("TestScene");
 
-    auto* child1 = scene->CreateChildGameObject("Child1");
-    auto* child2 = scene->CreateChildGameObject("Child2");
+    auto* child1 = scene->CreateChildGameObject(nullptr, "Child1");
+    auto* child2 = scene->CreateChildGameObject(nullptr, "Child2");
 
     ASSERT_NE(child1, nullptr);
     ASSERT_NE(child2, nullptr);
@@ -39,11 +39,11 @@ TEST(GameObjectTest, ChangeParent) {
     scene->SetName("TestScene");
 
     // Create 2 GameObjects under the scene
-    auto* parent1 = scene->CreateChildGameObject("Parent1");
-    auto* parent2 = scene->CreateChildGameObject("Parent2");
+    auto* parent1 = scene->CreateChildGameObject(nullptr, "Parent1");
+    auto* parent2 = scene->CreateChildGameObject(nullptr, "Parent2");
 
     // Create a gameObject under the first parent
-    auto* child = parent1->CreateChildGameObject("Child");
+    auto* child = parent1->CreateChildGameObject(nullptr, "Child");
 
     // Verify initial parent
     EXPECT_EQ(child->GetParent(), parent1);
@@ -62,7 +62,7 @@ TEST(GameObjectTest, RemoveChild) {
     auto* scene = new eng::Scene();
     scene->SetName("TestScene");
 
-    auto* child = scene->CreateChildGameObject("Child1");
+    auto* child = scene->CreateChildGameObject(nullptr, "Child1");
 
     ASSERT_NE(child, nullptr);
     EXPECT_EQ(child->GetParent(), scene);
@@ -82,7 +82,7 @@ TEST(GameObjectTest, SetAndGetName) {
     auto* scene = new eng::Scene();
     scene->SetName("TestScene");
 
-    auto* gameObject = scene->CreateChildGameObject("InitialName");
+    auto* gameObject = scene->CreateChildGameObject(nullptr, "InitialName");
 
     EXPECT_EQ(gameObject->GetName(), "InitialName");
 
@@ -97,7 +97,7 @@ TEST(GameObjectTest, AliveStatus) {
     auto* scene = new eng::Scene();
     scene->SetName("TestScene");
 
-    auto* child = scene->CreateChildGameObject("Child1");
+    auto* child = scene->CreateChildGameObject(nullptr, "Child1");
 
     EXPECT_TRUE(child->IsAlive());
 
@@ -113,9 +113,9 @@ TEST(GameObjectTest, NestedHierarchy) {
     auto* scene = new eng::Scene();
     scene->SetName("TestScene");
 
-    auto* parent = scene->CreateChildGameObject("Parent");
-    auto* child = parent->CreateChildGameObject("Child");
-    auto* grandChild = child->CreateChildGameObject("GrandChild");
+    auto* parent = scene->CreateChildGameObject(nullptr, "Parent");
+    auto* child = parent->CreateChildGameObject(nullptr, "Child");
+    auto* grandChild = child->CreateChildGameObject(nullptr, "GrandChild");
 
     EXPECT_EQ(parent->GetParent(), scene);
     EXPECT_EQ(child->GetParent(), parent);
@@ -130,10 +130,10 @@ TEST(GameObjectTest, UpdateRemovesDeadChildren) {
     scene->SetName("TestScene");
 
     // Create several children
-    auto* child1 = scene->CreateChildGameObject("Child1");
-    auto* child2 = scene->CreateChildGameObject("Child2");
-    auto* child3 = scene->CreateChildGameObject("Child3");
-    auto* child4 = scene->CreateChildGameObject("Child4");
+    auto* child1 = scene->CreateChildGameObject(nullptr, "Child1");
+    auto* child2 = scene->CreateChildGameObject(nullptr, "Child2");
+    auto* child3 = scene->CreateChildGameObject(nullptr, "Child3");
+    auto* child4 = scene->CreateChildGameObject(nullptr, "Child4");
 
     // Mark some children for destruction
     child1->ScheduleForDestroy();

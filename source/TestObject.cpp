@@ -26,7 +26,7 @@ TestObject::TestObject() {
 
         out vec3 vColor;
 
-        uniform vec4 uModel;
+        uniform mat4 uModel;
 
         void main(){
             vColor = color;
@@ -78,14 +78,16 @@ void TestObject::Update(float deltaTime) {
         position += glm::vec3(-1.0f, 0.0f, 0.0f) * deltaTime * speed;
     }
     if (inputManager.IsKeyPressed(GLFW_KEY_D)) {
-        position -= glm::vec3(1.0f, 0.0f, 0.0f) * deltaTime * speed;
+        position += glm::vec3(1.0f, 0.0f, 0.0f) * deltaTime * speed;
     }
     if (inputManager.IsKeyPressed(GLFW_KEY_W)) {
         position += glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * speed;
     }
     if (inputManager.IsKeyPressed(GLFW_KEY_S)) {
-        position -= glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * speed;
+        position += glm::vec3(0.0f, -1.0f, 0.0f) * deltaTime * speed;
     }
+
+    rotation += glm::vec3(0.0f, 0.0f, 1.0f) * deltaTime * speed;
 
     eng::RenderCommand renderCommand{
         mesh.get(),
