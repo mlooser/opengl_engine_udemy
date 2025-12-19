@@ -11,6 +11,7 @@ namespace eng {
 
     class GraphicsAPI {
     public:
+        void Init();
         static GLuint CreateVertexBuffer(const std::vector<float> &vertices);
 
         static GLuint CreateIndexBuffer(const std::vector<uint32_t> &indices);

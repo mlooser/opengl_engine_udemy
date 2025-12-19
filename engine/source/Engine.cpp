@@ -28,6 +28,7 @@ bool eng::Engine::Initialize() {
     if (!initWindow(window, this))
         return false;
 
+    graphics.Init();
     return application->Initialize(this);
 }
 

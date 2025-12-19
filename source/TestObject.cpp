@@ -48,15 +48,42 @@ TestObject::TestObject() {
     std::cout << "Shader Program id =" << shaderProgram->GetShaderProgram() << std::endl;
 
     std::vector<float> vertexes = {
-        0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-        0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+
+        0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f
+
     };
 
     std::vector<unsigned int> vertexIndices = {
+        //front
         0, 1, 2,
-        0, 2, 3
+        0, 2, 3,
+
+        //top
+        4, 5, 1,
+        4, 1, 0,
+
+        //right
+        4, 0 , 3,
+        4, 3 , 7,
+
+        //left
+        1, 5, 6,
+        1, 6 , 2,
+
+        //bottom
+        3, 2, 6,
+        3, 6, 7,
+
+        //back
+        4, 7 , 6,
+        4, 6, 5
     };
 
     eng::VertexLayout vertexLayout;
