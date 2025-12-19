@@ -89,11 +89,7 @@ glm::mat4 eng::GameObject::GetLocalTransform() const {
     glm::mat4 localTransform = glm::mat4(1.0f);
 
     localTransform = glm::translate(localTransform, transform.position);
-
-    localTransform = glm::rotate(localTransform, transform.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-    localTransform = glm::rotate(localTransform, transform.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-    localTransform = glm::rotate(localTransform, transform.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-
+    localTransform = localTransform * glm::mat4_cast(transform.rotation);
     localTransform = glm::scale(localTransform, transform.scale);
 
     return localTransform;

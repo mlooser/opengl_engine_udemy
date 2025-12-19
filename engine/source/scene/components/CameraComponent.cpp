@@ -12,7 +12,13 @@ void eng::CameraComponent::Update(float deltaTime) {
 }
 
 glm::mat4 eng::CameraComponent::GetViewMatrix() const {
-    return glm::inverse(owner->GetWorldTransform());
+    glm::mat4 viewMatrix = glm::mat4_cast(owner->GetTransform().rotation);
+    viewMatrix = glm::translate(viewMatrix, owner->GetTransform().position);
+
+    if (owner->GetParent()) {
+        viewMatrix = owner->GetParent()->GetWorldTransform() * viewMatrix;
+    }
+    return glm::inverse(viewMatrix);
 }
 
 glm::mat4 eng::CameraComponent::GetProjectionMatrix(float aspectRatio) const {

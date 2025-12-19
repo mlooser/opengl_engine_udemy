@@ -8,6 +8,7 @@
 #include "GLFW/glfw3.h"
 #include "input/InputManager.h"
 #include "scene/GameObject.h"
+#include <glm/gtc/quaternion.hpp>
 
 void eng::PlayerControllerComponent::Update(float deltaTime) {
     Component::Update(deltaTime);
@@ -16,12 +17,20 @@ void eng::PlayerControllerComponent::Update(float deltaTime) {
 
     if (inputManager.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT)) {
         glm::vec2 mouseDelta = inputManager.CalculateMouseDeltaSinceLastFrame();
+        mouseDelta *= deltaTime * mouseSensitivity;
 
-        glm::vec3& rotation = owner->GetTransform().rotation;
-        rotation.x += mouseDelta.y * mouseSensitivity * deltaTime;
-        rotation.y += mouseDelta.x * mouseSensitivity * deltaTime;
+        glm::quat& rotation = owner->GetTransform().rotation;
 
-        owner->GetTransform().rotation = rotation;
+        float yAngle = -mouseDelta.x;
+        glm::quat yRotation = glm::angleAxis(yAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+
+        float xAngle = -mouseDelta.y;
+        glm::vec3 right = rotation * glm::vec3(1.0f, 0.0f, 0.0f);
+        glm::quat xRotation = glm::angleAxis(xAngle, right);
+
+        glm::quat deltaRotation = yRotation * xRotation;
+
+        owner->GetTransform().rotation = glm::normalize(rotation * deltaRotation);
     }
 
     glm::vec3 position = owner->GetTransform().position;
@@ -42,8 +51,4 @@ void eng::PlayerControllerComponent::Update(float deltaTime) {
         position -= forward * deltaTime * movementSpeed;
     }
     owner->GetTransform().position = position;
-
-    // transform.rotation += glm::vec3(0.0f, 0.0f, 1.0f) * deltaTime * speed;
-
-
 }
