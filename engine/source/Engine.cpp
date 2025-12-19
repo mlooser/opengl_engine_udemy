@@ -113,6 +113,10 @@ eng::RenderQueue & eng::Engine::GetRenderQueue() {
     return renderQueue;
 }
 
+eng::FileSystem & eng::Engine::GetFileSystem() {
+    return fileSystem;
+}
+
 bool initWindow(GLFWwindow *&window, eng::Engine* engine) {
     std::cout << "Initializing window" << std::endl;
     if (!glfwInit()) {

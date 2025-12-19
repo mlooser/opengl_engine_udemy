@@ -5,6 +5,7 @@
 #include "input/InputManager.h"
 #include "graphics/GraphicsAPI.h"
 #include "render/RenderQueue.h"
+#include "io/FileSystem.h"
 
 struct GLFWwindow;
 
@@ -30,6 +31,7 @@ namespace eng {
         InputManager& GetInputManager();
         GraphicsAPI& GetGraphicsAPI();
         RenderQueue& GetRenderQueue();
+        FileSystem& GetFileSystem();
 
     private:
         GLFWwindow* window;
@@ -39,5 +41,6 @@ namespace eng {
         InputManager inputManager;
         GraphicsAPI graphics;
         RenderQueue renderQueue;
+        FileSystem fileSystem;
     };
 }
