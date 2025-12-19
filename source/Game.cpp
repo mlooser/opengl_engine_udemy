@@ -18,6 +18,7 @@ bool Game::Initialize(eng::Engine *owner) {
 
     cameraHolder->SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
     cameraHolder->AddComponent<eng::CameraComponent>();
+    cameraHolder->AddComponent<eng::PlayerControllerComponent>();
 
     scene.SetMainCamera(cameraHolder);
 

@@ -6,6 +6,7 @@ include(GoogleTest)
 add_executable(EngineTests
     GameObjectTest.cpp
     SceneTest.cpp
+    InputManagerTest.cpp
 )
 
 # Link against gtest, Engine library

@@ -86,17 +86,17 @@ eng::GameObject *eng::GameObject::CreateChildGameObject(Engine *engine, const st
 }
 
 glm::mat4 eng::GameObject::GetLocalTransform() const {
-    glm::mat4 transform = glm::mat4(1.0f);
+    glm::mat4 localTransform = glm::mat4(1.0f);
 
-    transform = glm::translate(transform, position);
+    localTransform = glm::translate(localTransform, transform.position);
 
-    transform = glm::rotate(transform, rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-    transform = glm::rotate(transform, rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-    transform = glm::rotate(transform, rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    localTransform = glm::rotate(localTransform, transform.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    localTransform = glm::rotate(localTransform, transform.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+    localTransform = glm::rotate(localTransform, transform.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
 
-    transform = glm::scale(transform, scale);
+    localTransform = glm::scale(localTransform, transform.scale);
 
-    return transform;
+    return localTransform;
 }
 
 glm::mat4 eng::GameObject::GetWorldTransform() const {
@@ -112,5 +112,13 @@ eng::Engine * eng::GameObject::GetEngine() const {
 }
 
 void eng::GameObject::SetPosition(const glm::vec3 &vec) {
-    position = vec;
+    transform.position = vec;
+}
+
+eng::Transform& eng::GameObject::GetTransform() {
+    return transform;
+}
+
+const eng::Transform& eng::GameObject::GetTransform() const {
+    return transform;
 }

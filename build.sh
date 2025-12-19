@@ -12,6 +12,31 @@ if [ "$1" == "clean" ]; then
     exit 0
 fi
 
+# Check for run argument
+if [ "$1" == "run" ]; then
+    echo "Building and running project..."
+    echo ""
+
+    # Build first
+    BUILD_OUTPUT=$($CMAKE --build cmake-build-debug 2>&1)
+    BUILD_STATUS=$?
+
+    # Display build output
+    echo "$BUILD_OUTPUT"
+
+    if [ $BUILD_STATUS -eq 0 ]; then
+        echo ""
+        echo "Build successful! Running..."
+        echo "========================================"
+        ./cmake-build-debug/GameDevelopmentProject
+        exit 0
+    else
+        echo ""
+        echo "Build failed! Cannot run."
+        exit 1
+    fi
+fi
+
 echo "Building project..."
 echo ""
 

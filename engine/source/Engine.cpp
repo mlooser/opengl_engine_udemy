@@ -16,6 +16,8 @@
 
 bool initWindow(GLFWwindow *&window, eng::Engine* engine);
 void keyCallback(GLFWwindow *window, int key, int scanCode, int action, int mode);
+void mouseCallback(GLFWwindow *window, int button, int action, int mods);
+void mousePositionCallback(GLFWwindow *window, double xpos, double ypos);
 
 bool eng::Engine::Initialize() {
     std::cout << "Engine Initialized" << std::endl;
@@ -89,6 +91,8 @@ void eng::Engine::Run() {
         application->Update(deltaTime);
 
         Render();
+
+        inputManager.UpdateLastFrameMousePositionThisFrame();
     }
 }
 
@@ -137,6 +141,8 @@ bool initWindow(GLFWwindow *&window, eng::Engine* engine) {
     // Store the Engine pointer in the window's user pointer
     glfwSetWindowUserPointer(window, engine);
     glfwSetKeyCallback(window, keyCallback);
+    glfwSetMouseButtonCallback(window, mouseCallback);
+    glfwSetCursorPosCallback(window, mousePositionCallback);
 
     std::cout << "Window initialized" << std::endl;
 
@@ -155,4 +161,27 @@ void keyCallback(GLFWwindow *window, int key, int scanCode, int action, int mode
     else if (action == GLFW_RELEASE) {
         inputManager.SetKeyPressed(key, false);
     }
+}
+
+void mouseCallback(GLFWwindow *window, int button, int action, int mods) {
+    eng::Engine* engine = static_cast<eng::Engine*>(glfwGetWindowUserPointer(window));
+    if (!engine) return;
+
+    eng::InputManager& inputManager = engine->GetInputManager();
+
+    if (action == GLFW_PRESS) {
+        inputManager.SetMouseButtonPressed(button, true);
+    }
+    else if (action == GLFW_RELEASE) {
+        inputManager.SetMouseButtonPressed(button, false);
+    }
+}
+
+void mousePositionCallback(GLFWwindow *window, double xpos, double ypos) {
+    eng::Engine* engine = static_cast<eng::Engine*>(glfwGetWindowUserPointer(window));
+    if (!engine) return;
+
+    eng::InputManager& inputManager = engine->GetInputManager();
+
+    inputManager.UpdateMousePositionThisFrame(glm::vec2(xpos, ypos));
 }

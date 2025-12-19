@@ -6,7 +6,7 @@
 
 int eng::Component::nextTypeId = 0;
 
-void eng::Component::Update(float deltaTime) {
+void eng::Component::Update(float) {
 }
 
 void eng::Component::SetOwner(GameObject *owner) {

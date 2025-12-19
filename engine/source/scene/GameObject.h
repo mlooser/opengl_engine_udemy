@@ -5,6 +5,7 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include "Component.h"
+#include "Transform.h"
 
 namespace eng {
     class Engine;
@@ -52,14 +53,16 @@ namespace eng {
 
         void SetPosition(const glm::vec3& vec);
 
+        Transform& GetTransform();
+
+        const Transform& GetTransform() const;
+
     protected:
         GameObject() = default;
 
         Engine *engine;
 
-        glm::vec3 position = glm::vec3(0.0f);
-        glm::vec3 rotation = glm::vec3(0.0f);
-        glm::vec3 scale = glm::vec3(1.0f);
+        Transform transform;
 
     private:
         std::string name;

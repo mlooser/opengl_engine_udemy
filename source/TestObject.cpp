@@ -76,23 +76,4 @@ TestObject::TestObject() {
 
 void TestObject::Update(float deltaTime) {
     GameObject::Update(deltaTime);
-
-    auto &inputManager = engine->GetInputManager();
-
-    float speed = 1.0f;
-
-    if (inputManager.IsKeyPressed(GLFW_KEY_A)) {
-        position += glm::vec3(-1.0f, 0.0f, 0.0f) * deltaTime * speed;
-    }
-    if (inputManager.IsKeyPressed(GLFW_KEY_D)) {
-        position += glm::vec3(1.0f, 0.0f, 0.0f) * deltaTime * speed;
-    }
-    if (inputManager.IsKeyPressed(GLFW_KEY_W)) {
-        position += glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * speed;
-    }
-    if (inputManager.IsKeyPressed(GLFW_KEY_S)) {
-        position += glm::vec3(0.0f, -1.0f, 0.0f) * deltaTime * speed;
-    }
-
-    rotation += glm::vec3(0.0f, 0.0f, 1.0f) * deltaTime * speed;
 }
