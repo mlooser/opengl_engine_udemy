@@ -86,7 +86,7 @@ eng::GameObject *eng::GameObject::CreateChildGameObject(Engine *engine, const st
 }
 
 glm::mat4 eng::GameObject::GetLocalTransform() const {
-    glm::mat4 localTransform = glm::mat4(1.0f);
+    glm::mat4 localTransform(1.0f);
 
     localTransform = glm::translate(localTransform, transform.position);
     localTransform = localTransform * glm::mat4_cast(transform.rotation);

@@ -30,7 +30,7 @@ void eng::PlayerControllerComponent::Update(float deltaTime) {
 
         glm::quat deltaRotation = yRotation * xRotation;
 
-        owner->GetTransform().rotation = glm::normalize(rotation * deltaRotation);
+        owner->GetTransform().rotation = glm::normalize( deltaRotation * rotation);
     }
 
     glm::vec3 position = owner->GetTransform().position;

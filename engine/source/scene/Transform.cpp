@@ -9,7 +9,7 @@
 using namespace glm;
 
 vec3 eng::Transform::CalculateForwardVector() const {
-    return rotation * glm::vec3(0.0f, 0.0f, 1.0f);
+    return rotation * glm::vec3(0.0f, 0.0f, -1.0f);
 }
 
 vec3 eng::Transform::CalculateRightVector() const {
