@@ -53,6 +53,8 @@ set(PROJECT_SOURCE_FILES
         source/scene/Transform.h
         source/io/FileSystem.cpp
         source/io/FileSystem.h
+        source/graphics/Texture.cpp
+        source/graphics/Texture.h
 )
 
 include_directories(source)

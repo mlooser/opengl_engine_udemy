@@ -6,6 +6,7 @@
 
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
+#include "graphics/Texture.h"
 
 
 eng::ShaderProgram::~ShaderProgram() {
@@ -14,6 +15,7 @@ eng::ShaderProgram::~ShaderProgram() {
 
 void eng::ShaderProgram::Bind() {
     glUseProgram(shaderProgram);
+    currentTextureUnit = 0;
 }
 
 GLint eng::ShaderProgram::GetUniformLocation(const std::string &name) {
@@ -41,4 +43,13 @@ void eng::ShaderProgram::SetUniform(const std::string &name, float v0, float v1)
 void eng::ShaderProgram::SetUniform(const std::string &name, const glm::mat4& matrix) {
     auto location = GetUniformLocation(name);
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void eng::ShaderProgram::SetTexture(const std::string &name, Texture *texture) {
+    auto location = GetUniformLocation(name);
+
+    glActiveTexture(GL_TEXTURE0 + currentTextureUnit);
+    glBindTexture(GL_TEXTURE_2D, texture->GetId());
+    glUniform1i(location, currentTextureUnit);
+    currentTextureUnit++;
 }
