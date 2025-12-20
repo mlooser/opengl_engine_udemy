@@ -8,66 +8,19 @@
 #include <iostream>
 
 #include "scene/components/MeshComponent.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 
-std::shared_ptr<eng::Texture> TestObject::loadTexture() {
-    eng::FileSystem& fileSystem = GetEngine()->GetFileSystem();
-    auto path = fileSystem.GetAssetsFolder() / "brick.png";
-
-    int width, height, channels;
-    unsigned char* data = stbi_load(path.string().c_str(), &width, &height, &channels, 0);
-
-    if (data) {
-        std::cout << "Loading image " << width << "x" << height << "x" << channels << std::endl;
-    }
-    auto texture = std::make_shared<eng::Texture>(width, height, channels, data);
-    stbi_image_free(data);
-    return texture;
-}
 
 TestObject::TestObject() {
-    std::string fragmentShaderSource = R"(
-         #version 330 core
-         out vec4 FragColor;
-
-         in vec3 vColor;
-         in vec2 vUV;
-
-        uniform sampler2D brickTexture;
-
-         void main(){
-             vec4 texColor = texture(brickTexture, vUV);
-             FragColor = texColor * vec4(vColor, 1.f);
-         }
-     )";
-
-    std::string vertexShaderSource = R"(
-        #version 330 core
-        layout (location = 0) in vec3 position;
-        layout (location = 1) in vec3 color;
-        layout (location = 2) in vec2 uv;
-
-        out vec3 vColor;
-        out vec2 vUV;
-
-        uniform mat4 uModel;
-        uniform mat4 uView;
-        uniform mat4 uProjection;
-
-        void main(){
-            vColor = color;
-            vUV = uv;
-            gl_Position = uProjection * uView * uModel * vec4(position, 1.0);
-        }
-    )";
+    auto& fileSystem = GetEngine()->GetFileSystem();
+    std::string fragmentShaderSource = fileSystem.LoadAssetFileText("shaders/fragment.glsl");
+    std::string vertexShaderSource = fileSystem.LoadAssetFileText("shaders/vertex.glsl");
 
     auto shaderProgram = eng::GraphicsAPI::CreateShaderProgram(
         vertexShaderSource,
         fragmentShaderSource);
 
-
-    std::shared_ptr<eng::Texture> texture = loadTexture();
+    std::shared_ptr<eng::Texture> texture = eng::Texture::LoadTexture(
+        GetEngine()->GetFileSystem(), "brick.png");
 
     auto material = std::make_shared<eng::Material>();
     material->SetShaderProgram(shaderProgram);

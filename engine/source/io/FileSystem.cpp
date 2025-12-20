@@ -5,6 +5,7 @@
 #include "FileSystem.h"
 
 #include <config.h>
+#include <vector>
 
 #if defined _WIN32
 #include <windows.h>
@@ -15,6 +16,7 @@
 #include <limits.h>
 #endif
 
+#include <fstream>
 
 std::filesystem::path eng::FileSystem::GetExecutableFolder() const {
 #if defined _WIN32
@@ -43,4 +45,35 @@ std::filesystem::path eng::FileSystem::GetAssetsFolder() const {
     }
 #endif
     return std::filesystem::weakly_canonical(GetExecutableFolder() / "assets");
+}
+
+std::vector<char> eng::FileSystem::LoadFile(const std::filesystem::path &filePath) {
+    std::ifstream ifs(filePath.string(), std::ios::binary| std::ios::ate);
+
+    if (!ifs.is_open()) {
+        //TODO ML exceptions
+        return {};
+    }
+
+    auto size = ifs.tellg();
+    ifs.seekg(0);
+
+    std::vector<char> buffer(size);
+
+    if (!ifs.read(buffer.data(), size)) {
+        //TODO ML exceptions
+        return {};
+    }
+
+    return buffer;
+}
+
+std::vector<char> eng::FileSystem::LoadAssetFile(const std::filesystem::path &assetPath) {
+    return LoadFile(GetAssetsFolder() / assetPath );
+}
+
+std::string eng::FileSystem::LoadAssetFileText(const std::filesystem::path &assetPath) {
+    auto buffer = LoadAssetFile(assetPath);
+
+    return {buffer.begin(), buffer.end()};
 }

@@ -1,10 +1,17 @@
 #pragma once
 
+#include <memory>
 #include <GL/glew.h>
 
 namespace  eng {
+    class FileSystem;
+
     class Texture {
     public:
+        static std::shared_ptr<Texture> LoadTexture(FileSystem& fileSystem, const std::string& fileName);
+
+        void InitializeTexture(int width, int height, unsigned char *data);
+
         Texture(int width, int height, int numberOfChannels, unsigned char* data);
         ~Texture();
 
