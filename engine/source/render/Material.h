@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -10,6 +11,7 @@
 namespace eng {
     class ShaderProgram;
     class Texture;
+    class FileSystem;
 
     class Material {
     public:
@@ -20,6 +22,8 @@ namespace eng {
         void SetParamValue(const std::string& name, std::shared_ptr<Texture>& texture);
 
         void Bind();
+
+        static std::shared_ptr<Material> Load(FileSystem& fileSystem, const std::string& path);
 
     private:
         std::shared_ptr<ShaderProgram> shader;

@@ -4,7 +4,6 @@
 
 #include "TestObject.h"
 
-#include <GLFW/glfw3.h>
 #include <iostream>
 
 #include "scene/components/MeshComponent.h"
@@ -12,21 +11,9 @@
 
 TestObject::TestObject() {
     auto& fileSystem = GetEngine()->GetFileSystem();
-    std::string fragmentShaderSource = fileSystem.LoadAssetFileText("shaders/fragment.glsl");
-    std::string vertexShaderSource = fileSystem.LoadAssetFileText("shaders/vertex.glsl");
 
-    auto shaderProgram = eng::GraphicsAPI::CreateShaderProgram(
-        vertexShaderSource,
-        fragmentShaderSource);
-
-    std::shared_ptr<eng::Texture> texture = eng::Texture::LoadTexture(
-        GetEngine()->GetFileSystem(), "brick.png");
-
-    auto material = std::make_shared<eng::Material>();
-    material->SetShaderProgram(shaderProgram);
-    material->SetParamValue("brickTexture", texture);
-
-    std::cout << "Shader Program id =" << shaderProgram->GetShaderProgram() << std::endl;
+    auto material = eng::Material::Load(
+        fileSystem, "materials/bricks.mat");
 
     std::vector<float> vertexes = {
         // Front face
