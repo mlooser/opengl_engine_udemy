@@ -79,7 +79,7 @@ std::shared_ptr<eng::Material> eng::Material::Load(FileSystem& fileSystem, const
         result->SetShaderProgram(shaderProgram);
     }
 
-    if (json.contains("params"))
+    if (json.contains("params") && result)
     {
         auto paramsObj = json["params"];
 

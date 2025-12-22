@@ -25,11 +25,11 @@ bool Game::Initialize(eng::Engine *owner) {
     cameraHolder->AddComponent<eng::CameraComponent>();
     cameraHolder->AddComponent<eng::PlayerControllerComponent>();
 
-    auto suzanneMesh = eng::Mesh::Load(owner->GetFileSystem(), "models/suzanne/Suzanne.glft");
+    auto suzanneMesh = eng::Mesh::Load(owner->GetFileSystem(), "models/suzanne/Suzanne.gltf");
     auto suzanneMaterial = eng::Material::Load(owner->GetFileSystem(), "materials/suzanne.mat");
-
+    
     auto suzanneObj = scene.CreateChildGameObject(owner, "Suzanne");
-    suzanneObj->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    suzanneObj->SetPosition(glm::vec3(0.0f, 0.0f, -5.0f));
     suzanneObj->AddComponent<eng::MeshComponent>(suzanneMesh, suzanneMaterial);
 
     scene.SetMainCamera(cameraHolder);

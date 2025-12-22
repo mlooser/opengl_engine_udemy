@@ -196,7 +196,7 @@ std::shared_ptr<eng::Mesh> eng::Mesh::Load(FileSystem &fileSystem, const std::st
 
                     auto index = (vi * vertexLayout.stride + el.offset) / sizeof(float);
                     float* outData = &vertices[index];
-                    readFloats(accessors[index], vi, outData, el.numberOfComponents);
+                    readFloats(accessors[el.attributeLocation], vi, outData, el.numberOfComponents);
                 }
             }
 
