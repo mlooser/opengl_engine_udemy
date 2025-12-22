@@ -6,6 +6,7 @@
 namespace eng {
 
     class GraphicsAPI;
+    class FileSystem;
 
     class Mesh {
 
@@ -31,6 +32,8 @@ namespace eng {
 
         void Bind();
         void Draw();
+
+        static std::shared_ptr<Mesh> Load(FileSystem& fileSystem, const std::string& assetName);
     private:
         GLuint vbo = 0;
         GLuint ebo = 0;

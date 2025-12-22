@@ -70,6 +70,7 @@ include_directories(thirdparty/glm-1.0.1)
 
 include_directories(thirdparty/stb_image)
 include_directories(thirdparty/json)
+include_directories(thirdparty/cgltf)
 
 # Add Glew library
 add_compile_definitions(GLEW_NO_GLU)

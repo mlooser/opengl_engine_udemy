@@ -120,7 +120,7 @@ std::shared_ptr<eng::Material> eng::Material::Load(FileSystem& fileSystem, const
                 }
             }
         }
-
-        return result;
     }
+
+    return result;
 }
